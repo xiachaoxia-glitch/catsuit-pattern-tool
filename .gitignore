@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.dxf_validation.json
+.venv/
+venv/
+.pytest_cache/
