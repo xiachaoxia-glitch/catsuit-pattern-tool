@@ -33,7 +33,6 @@ jobs:
 
       - name: Smoke test — generate + validate DXF
         run: |
-          cd /tmp
           python -c "import generate_catsuit_pattern, validate_pattern; print('imports OK')"
           python generate_catsuit_pattern.py
           python validate_pattern.py catsuit_pattern_$(date +%Y%m%d).dxf | head -20
