@@ -30,6 +30,26 @@ python validate_pattern.py catsuit_pattern_20260721.dxf
 python auto_pattern.py --manual --bust 88 --waist 68 --hip 92 --height 165
 ```
 
+## Install from PyPI
+
+```bash
+pip install catsuit-pattern
+
+# CLI entry points (after install)
+catsuit-generate              # generate a DXF pattern
+catsuit-validate <file.dxf>   # validate a pattern
+catsuit-auto --manual --bust 88 --waist 68 --hip 92   # full pipeline
+```
+
+## Development
+
+```bash
+pip install -e .[dev]
+pytest -v        # run the test suite
+```
+
+CI runs the test suite + smoke test (generate → validate) on Python 3.9/3.11/3.12 for every push and PR.
+
 ## Example Output
 
 Run `validate_pattern.py examples/catsuit_pattern_20260721.dxf` to see a sample report:

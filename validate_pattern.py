@@ -58,7 +58,10 @@ def check_self_intersection(pts: List[Tuple[float, float]]) -> bool:
 
 
 def orientation(p, q, r) -> int:
-    val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+    """叉积判断三点方向：1=逆时针(左转), 2=顺时针(右转), 0=共线
+    标准公式：(q-p) × (r-p)
+    """
+    val = (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
     if abs(val) < 1e-9:
         return 0
     return 1 if val > 0 else 2
@@ -285,7 +288,7 @@ def print_report(report: dict):
     print()
 
 
-if __name__ == "__main__":
+def main(argv=None):
     import json
 
     # ── 你可以在这里填写真实体型尺寸进行比例验证 ──
@@ -296,12 +299,16 @@ if __name__ == "__main__":
         "height": 165,
     }
 
-    if len(sys.argv) < 2:
+    import sys as _sys
+    if argv is None:
+        argv = _sys.argv[1:]
+
+    if len(argv) < 1:
         print("用法: python validate_pattern.py <dxf 文件路径>")
         print("示例: python validate_pattern.py catsuit_pattern_20260721.dxf")
         raise SystemExit(1)
 
-    path = sys.argv[1]
+    path = argv[0]
     report = validate(path, body_measurements=BODY_MEASUREMENTS)
     print_report(report)
 
@@ -309,3 +316,7 @@ if __name__ == "__main__":
     with open(path.replace(".dxf", "_validation.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
     print(f"JSON 报告已保存: {path.replace('.dxf', '_validation.json')}")
+
+
+if __name__ == "__main__":
+    main()

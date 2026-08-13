@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install .
+          pip install pytest
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Smoke test — generate + validate DXF
+        run: |
+          cd /tmp
+          python -c "import generate_catsuit_pattern, validate_pattern; print('imports OK')"
+          python generate_catsuit_pattern.py
+          python validate_pattern.py catsuit_pattern_$(date +%Y%m%d).dxf | head -20
