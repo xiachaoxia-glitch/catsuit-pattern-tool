@@ -24,9 +24,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          pip install --upgrade pip flake8
           pip install .
           pip install pytest
+
+      - name: Syntax & Lint Check
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.pytest_cache,__pycache__,build,dist,*.egg-info
 
       - name: Run tests
         run: pytest -v
